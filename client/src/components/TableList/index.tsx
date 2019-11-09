@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   Divider,
@@ -9,45 +9,45 @@ import {
   Row,
   Select,
   Input
-} from "antd";
-import { FormComponentProps } from "antd/es/form";
-import CreateForm from "./components/CreateForm";
-import DetailModal from "./components/DetailModal";
-import { PackageService } from "../../services/package/requests";
-import LocalConfig from "../../config.json";
+} from 'antd';
+import { FormComponentProps } from 'antd/es/form';
+import CreateForm from './components/CreateForm';
+import DetailModal from './components/DetailModal';
+import { PackageService } from '../../services/package/requests';
+import LocalConfig from '../../config.json';
 
-import * as styles from "./index.less";
+import * as styles from './index.less';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 interface TableListProps extends FormComponentProps {}
 
-const TableList: React.FC<TableListProps> = props => {
+const TableList: React.FC<TableListProps> = (props) => {
   const columns = [
     {
-      title: "模块名",
-      dataIndex: "moduleName",
-      key: "moduleName"
+      title: '模块名',
+      dataIndex: 'moduleName',
+      key: 'moduleName'
     },
     {
-      title: "版本号",
-      dataIndex: "version",
-      key: "version"
+      title: '版本号',
+      dataIndex: 'version',
+      key: 'version'
     },
     {
-      title: "状态",
-      dataIndex: "statusStr",
-      key: "statusStr"
+      title: '状态',
+      dataIndex: 'statusStr',
+      key: 'statusStr'
     },
     {
-      title: "发布时间",
-      dataIndex: "createTime",
-      key: "createTime"
+      title: '发布时间',
+      dataIndex: 'createTime',
+      key: 'createTime'
     },
     {
-      title: "操作",
-      key: "action",
+      title: '操作',
+      key: 'action',
       render: (text: string, record: any) => (
         <>
           <a onClick={() => handleModalVisible(true, record)}>查看</a>
@@ -105,8 +105,8 @@ const TableList: React.FC<TableListProps> = props => {
 
   const handleConfimStopPackage = (data: any) => {
     Modal.info({
-      title: "确认要终止发布该离线包吗？",
-      okText: "确认",
+      title: '确认要终止发布该离线包吗？',
+      okText: '确认',
       onOk() {
         handleStopPackage(data);
       }
@@ -144,11 +144,11 @@ const TableList: React.FC<TableListProps> = props => {
   };
 
   const fetchPackageList = async (query: any) => {
-    if (query.moduleName === "") {
+    if (query.moduleName === '') {
       delete query.moduleName;
     }
 
-    if (query.status === "all") {
+    if (query.status === 'all') {
       delete query.status;
     }
 
@@ -171,15 +171,15 @@ const TableList: React.FC<TableListProps> = props => {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="模块名">
-              {getFieldDecorator("moduleName")(<Input placeholder="请输入" />)}
+              {getFieldDecorator('moduleName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="状态">
-              {getFieldDecorator("status", {
-                initialValue: "all"
+              {getFieldDecorator('status', {
+                initialValue: 'all'
               })(
-                <Select placeholder="请选择" style={{ width: "100%" }}>
+                <Select placeholder="请选择" style={{ width: '100%' }}>
                   <Option value="all">全部状态</Option>
                   <Option value={1}>在线</Option>
                   <Option value={0}>已停用</Option>

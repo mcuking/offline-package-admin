@@ -18,17 +18,17 @@ const DEFAULT_OPTIONS = {
 const instance = axios.create(DEFAULT_OPTIONS);
 
 instance.interceptors.request.use(
-  config => {
+  (config) => {
     return config;
   },
-  error => Promise.reject(error)
+  (error) => Promise.reject(error)
 );
 
 instance.interceptors.response.use(
-  response => {
+  (response) => {
     return response;
   },
-  thrown => {
+  (thrown) => {
     return Promise.reject(thrown);
   }
 );

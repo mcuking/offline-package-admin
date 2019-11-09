@@ -15,17 +15,18 @@ const Sidebar: React.FC = () => {
         style={{ height: '100%' }}
         defaultSelectedKeys={['/list']}
         selectedKeys={[location.pathname]}
-        theme='dark'
-        mode='inline'>
-        <Menu.Item key='/list'>
-          <Link to='/list'>
-            <Icon type='ordered-list' />
+        theme="dark"
+        mode="inline"
+      >
+        <Menu.Item key="/list">
+          <Link to="/list">
+            <Icon type="ordered-list" />
             <span>离线包列表</span>
           </Link>
         </Menu.Item>
-        <Menu.Item key='/setting'>
-          <Link to='/setting'>
-            <Icon type='setting' />
+        <Menu.Item key="/setting">
+          <Link to="/setting">
+            <Icon type="setting" />
             <span>全局设置</span>
           </Link>
         </Menu.Item>

@@ -1,6 +1,6 @@
-import React from "react";
-import { Form, Modal, Button } from "antd";
-import { FormComponentProps } from "antd/es/form";
+import React from 'react';
+import { Form, Modal, Button } from 'antd';
+import { FormComponentProps } from 'antd/es/form';
 
 const FormItem = Form.Item;
 
@@ -9,7 +9,7 @@ interface DetailModalProps extends FormComponentProps {
   detailModalVisible: boolean;
   setDetailModalVisible: (visible: boolean) => void;
 }
-const DetailModal: React.FC<DetailModalProps> = props => {
+const DetailModal: React.FC<DetailModalProps> = (props) => {
   const { current, detailModalVisible, setDetailModalVisible } = props;
   const patchUrls = current.patchUrls ? JSON.parse(current.patchUrls) : {};
   return (
@@ -34,7 +34,7 @@ const DetailModal: React.FC<DetailModalProps> = props => {
         {current.version}
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="状态">
-        {current.status === 1 ? "在线" : "已停用"}
+        {current.status === 1 ? '在线' : '已停用'}
       </FormItem>
       <FormItem
         labelCol={{ span: 5 }}
@@ -64,7 +64,7 @@ const DetailModal: React.FC<DetailModalProps> = props => {
             全量包
           </a>
         </div>
-        {Object.keys(patchUrls).map(version => {
+        {Object.keys(patchUrls).map((version) => {
           return (
             <div key={version}>
               <a

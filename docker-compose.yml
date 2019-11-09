@@ -1,7 +1,7 @@
 version: '3'
 services:
   offline-web: #前端项目的service name
-    container_name: 'offline-web-container' #容器名称
+    container_name: 'offline-client-container' #容器名称
     build: ./client #根据client目录下面的Dockerfile构建镜像
     restart: always
     ports:

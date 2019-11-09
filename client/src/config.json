@@ -1,0 +1,9 @@
+{
+  "AxiosBaseUrl": "http://localhost:5001",
+  "AxiosTimeout": 30000,
+  "AxiosHeader": {
+    "Content-Type": "application/json;chareset=UTF-8"
+  },
+
+  "ListQueryCount": 10
+}

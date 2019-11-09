@@ -1,0 +1,23 @@
+version: '3'
+services:
+  offline-web: #前端项目的service name
+    container_name: 'offline-web-container' #容器名称
+    build: ./client #根据client目录下面的Dockerfile构建镜像
+    restart: always
+    ports:
+      - 5001:80
+    depends_on:
+      - offline-server
+
+  offline-server: #后端项目的service name
+    container_name: 'offline-server-container'
+    build: ./server #根据server目录下面的Dockerfile构建镜像
+    restart: always
+    environment:
+      - PORT=5002
+      - MYSQL_HOST=192.168.27.63
+      - MYSQL_DATABASE=offline
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=test1234
+    ports:
+      - 5002:5002

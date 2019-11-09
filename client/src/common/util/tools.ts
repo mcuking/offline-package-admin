@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const classes = (...arr: any[]) => arr.filter(v => v).join(' ');
+export const classes = (...arr: any[]) => arr.filter((v) => v).join(' ');
 
 export function readFileIntoMemory(
   inputRef: React.MutableRefObject<any>,

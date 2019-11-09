@@ -1,16 +1,16 @@
-const proxy = require("http-proxy-middleware");
+const proxy = require('http-proxy-middleware');
 
 module.exports = function(app) {
   app.use(
-    proxy("/api", {
-      target: "http://localhost:5002",
+    proxy('/api', {
+      target: 'http://localhost:5002',
       changeOrigin: true,
-      pathRewrite: { "^/api": "" }
+      pathRewrite: { '^/api': '' }
     })
   );
   app.use(
-    proxy("/download", {
-      target: "http://localhost:5002",
+    proxy('/download', {
+      target: 'http://localhost:5002',
       changeOrigin: true
     })
   );

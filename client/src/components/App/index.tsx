@@ -23,7 +23,7 @@ const App: React.FC = () => {
 
   const location = useLocation();
 
-  const pathSnippets = location.pathname.split('/').filter(i => i);
+  const pathSnippets = location.pathname.split('/').filter((i) => i);
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
     return (
@@ -34,16 +34,16 @@ const App: React.FC = () => {
   });
 
   const breadcrumbItems = [
-    <Breadcrumb.Item key='home'>
-      <Link to='/'>首页</Link>
+    <Breadcrumb.Item key="home">
+      <Link to="/">首页</Link>
     </Breadcrumb.Item>
   ].concat(extraBreadcrumbItems);
 
   return (
     <div className={styles.app}>
       <Layout>
-        <Sider width='256' trigger={null} collapsible collapsed={collapsed}>
-          <div className='logo' />
+        <Sider width="256" trigger={null} collapsible collapsed={collapsed}>
+          <div className="logo" />
           <SideBar />
         </Sider>
         <Layout>
@@ -57,7 +57,8 @@ const App: React.FC = () => {
           <Breadcrumb
             style={{
               margin: '24px 0 0 24px'
-            }}>
+            }}
+          >
             {breadcrumbItems}
           </Breadcrumb>
           <Content
@@ -66,15 +67,16 @@ const App: React.FC = () => {
               padding: 24,
               background: '#fff',
               minHeight: 280
-            }}>
+            }}
+          >
             <Switch>
-              <Route exact path='/'>
-                <Redirect to='/list' />
+              <Route exact path="/">
+                <Redirect to="/list" />
               </Route>
-              <Route path='/list'>
+              <Route path="/list">
                 <TableList />
               </Route>
-              <Route path='/setting'>
+              <Route path="/setting">
                 <Setting />
               </Route>
             </Switch>

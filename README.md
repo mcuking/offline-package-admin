@@ -1,2 +1,3 @@
-# offline-package-server
-offline-package-server
+# offline-package-admin
+
+offline-package-admin

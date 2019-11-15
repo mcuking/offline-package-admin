@@ -1,14 +1,18 @@
 import http from '../http';
 import { packageInfoTranslator } from './translators';
 
+import { IPackageInfo } from '@/types';
+
 export interface IPackageService {
-  pushPackageInfo(data: any): void;
-  getPackageInfoList(query: ListQuery): any;
+  pushPackageInfo(data: FormData): void;
+  getPackageInfoList(
+    query: ListQuery
+  ): Promise<{ total: number; list: IPackageInfo[] }>;
   stopPackage(id: number): void;
 }
 
 export class PackageService implements IPackageService {
-  public async pushPackageInfo(data: any) {
+  public async pushPackageInfo(data: FormData) {
     await http({
       method: 'post',
       url: '/pushPackageInfo',
@@ -18,7 +22,7 @@ export class PackageService implements IPackageService {
 
   public async getPackageInfoList(
     query: ListQuery
-  ): Promise<{ total: number; list: any[] }> {
+  ): Promise<{ total: number; list: IPackageInfo[] }> {
     const {
       data: { list, total }
     } = await http({
@@ -27,7 +31,7 @@ export class PackageService implements IPackageService {
       data: query
     });
     return {
-      list: list.map((item: any) => packageInfoTranslator(item)),
+      list: list.map((item: IPackageInfo) => packageInfoTranslator(item)),
       total
     };
   }

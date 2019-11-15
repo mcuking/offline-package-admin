@@ -1,11 +1,12 @@
 import React from 'react';
 import { Form, Modal, Button } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
+import { IPackageInfo } from '@/types';
 
 const FormItem = Form.Item;
 
 interface DetailModalProps extends FormComponentProps {
-  current: AnyObject;
+  current: IPackageInfo;
   detailModalVisible: boolean;
   setDetailModalVisible: (visible: boolean) => void;
 }
@@ -48,7 +49,7 @@ const DetailModal: React.FC<DetailModalProps> = (props) => {
         wrapperCol={{ span: 15 }}
         label="发布日志"
       >
-        {current.update_log}
+        {current.updateLog}
       </FormItem>
       <FormItem
         labelCol={{ span: 5 }}

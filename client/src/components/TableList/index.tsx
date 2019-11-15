@@ -13,8 +13,9 @@ import {
 import { FormComponentProps } from 'antd/es/form';
 import CreateForm from './components/CreateForm';
 import DetailModal from './components/DetailModal';
-import { PackageService } from '../../services/package/requests';
-import LocalConfig from '../../config.json';
+import { PackageService } from '@/services/package/requests';
+import LocalConfig from '@/config.json';
+import { IPackageInfo, IPackageInfoListQuery, IPagination } from '@/types';
 
 import * as styles from './index.less';
 
@@ -48,13 +49,23 @@ const TableList: React.FC<TableListProps> = (props) => {
     {
       title: '操作',
       key: 'action',
-      render: (text: string, record: any) => (
+      render: (text: string, record: IPackageInfo) => (
         <>
-          <a onClick={() => handleModalVisible(true, record)}>查看</a>
+          <button
+            className={styles.tableListButton}
+            onClick={() => handleModalVisible(true, record)}
+          >
+            查看
+          </button>
           {record.status === 1 && (
             <span>
               <Divider type="vertical" />
-              <a onClick={() => handleConfimStopPackage(record)}>终止发布</a>
+              <button
+                className={styles.tableListButton}
+                onClick={() => handleConfimStopPackage(record)}
+              >
+                终止发布
+              </button>
             </span>
           )}
         </>
@@ -62,7 +73,7 @@ const TableList: React.FC<TableListProps> = (props) => {
     }
   ];
 
-  const [packageList, setPackageList] = React.useState([] as any[]);
+  const [packageList, setPackageList] = React.useState([] as IPackageInfo[]);
 
   const [listTotal, setListTotal] = React.useState(0);
 
@@ -74,14 +85,14 @@ const TableList: React.FC<TableListProps> = (props) => {
 
   const [pushConfirmLoading, setPushConfirmLoading] = React.useState(false);
 
-  const [current, setCurrent] = React.useState({});
+  const [current, setCurrent] = React.useState({} as IPackageInfo);
 
-  const handleModalVisible = (visible: boolean, record: any) => {
+  const handleModalVisible = (visible: boolean, record: IPackageInfo) => {
     setDetailModalVisible(visible);
     setCurrent(record);
   };
 
-  const handleAddPackage = async (data: any) => {
+  const handleAddPackage = async (data: FormData) => {
     try {
       await new PackageService().pushPackageInfo(data);
     } catch (error) {
@@ -93,7 +104,7 @@ const TableList: React.FC<TableListProps> = (props) => {
     }
   };
 
-  const handleStopPackage = async (data: any) => {
+  const handleStopPackage = async (data: IPackageInfo) => {
     try {
       await new PackageService().stopPackage(data.id);
     } catch (error) {
@@ -103,10 +114,11 @@ const TableList: React.FC<TableListProps> = (props) => {
     }
   };
 
-  const handleConfimStopPackage = (data: any) => {
-    Modal.info({
+  const handleConfimStopPackage = (data: IPackageInfo) => {
+    Modal.confirm({
       title: '确认要终止发布该离线包吗？',
       okText: '确认',
+      cancelText: '取消',
       onOk() {
         handleStopPackage(data);
       }
@@ -135,21 +147,21 @@ const TableList: React.FC<TableListProps> = (props) => {
     fetchPackageList({ page: 1, size: LocalConfig.ListQueryCount });
   };
 
-  const handleTableChange = (pagination: any) => {
+  const handleTableChange = (pagination: IPagination) => {
     fetchPackageList({
-      page: pagination.current,
-      size: pagination.pageSize,
+      page: pagination.current!,
+      size: pagination.pageSize!,
       ...formValues
     });
   };
 
-  const fetchPackageList = async (query: any) => {
+  const fetchPackageList = async (query: IPackageInfoListQuery) => {
     if (query.moduleName === '') {
-      delete query.moduleName;
+      Reflect.deleteProperty(query, 'moduleName');
     }
 
     if (query.status === 'all') {
-      delete query.status;
+      Reflect.deleteProperty(query, 'status');
     }
 
     const { list, total } = await new PackageService().getPackageInfoList(

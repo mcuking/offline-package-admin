@@ -8,10 +8,10 @@ const FormItem = Form.Item;
 
 interface DetailFormProps extends FormComponentProps {
   createFormVisible: boolean;
-  setCreateFormVisible: (visible: boolean) => void;
   pushConfirmLoading: boolean;
+  setCreateFormVisible: (visible: boolean) => void;
   setPushConfirmLoading: (visible: boolean) => void;
-  handleAddPackage: (data: any) => void;
+  handleAddPackage: (data: FormData) => void;
 }
 const CreateForm: React.FC<DetailFormProps> = (props) => {
   const {
@@ -42,7 +42,7 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
       const formData = new FormData();
       Object.keys(fieldsValue)
         .filter((key) => key !== 'file')
-        .map((key) => {
+        .forEach((key) => {
           formData.append(key, fieldsValue[key]);
         });
       formData.append('file', uploadFile);

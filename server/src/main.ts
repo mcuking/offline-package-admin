@@ -15,7 +15,7 @@ async function bootstrap() {
   // 防止跨站脚本攻击
   app.use(helmet());
 
-  // app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe());
 
   // 统一封装接口异常时返回数据
   app.useGlobalFilters(new HttpExceptionFilter());

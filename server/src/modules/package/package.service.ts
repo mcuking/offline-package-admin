@@ -3,7 +3,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as fs from 'fs';
-import { CreatePackageDto } from './create.package.dto';
 import { PackageEntity } from './package.entity';
 import config from '../../common/config';
 import { getFilePath, getFileName } from '../../common/utils/tools';
@@ -15,7 +14,7 @@ export class PackageService {
     private readonly packageEntity: Repository<PackageEntity>,
   ) {}
 
-  async pushPackageInfo(dto: CreatePackageDto, lastVersion: number | void) {
+  async pushPackageInfo(dto, lastVersion: number | void) {
     const { moduleName, version } = dto;
 
     // 因校验通过，因此需去除本地文件名的 _tmp 后缀

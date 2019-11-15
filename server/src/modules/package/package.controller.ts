@@ -2,14 +2,10 @@ import {
   Controller,
   Get,
   Post,
-  Put,
-  Param,
   Body,
-  Query,
   UploadedFile,
   UseInterceptors,
   HttpStatus,
-  Logger,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -21,7 +17,6 @@ import {
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
 import { PackageService } from './package.service';
-import { CreatePackageDto } from './create.package.dto';
 import { QueryPackageDto } from './query.package.dto';
 import { StopPackageDto } from './stop.package.dto';
 import { getFileName, getFilePath } from '../../common/utils/tools';
@@ -65,8 +60,8 @@ export class PackageController {
   @ApiOperation({ title: '上传离线包' })
   @ApiConsumes('multipart/form-data')
   @ApiImplicitFile({ name: 'file', required: true })
-  async pushPackageInfo(@UploadedFile() file, @Body() dto: CreatePackageDto) {
-    const { moduleName, version } = dto;
+  async pushPackageInfo(@UploadedFile() file, @Body() uploadInfo) {
+    const { moduleName, version } = uploadInfo;
 
     // 进行参数校验
     const lastVersion = await this.packageService.getLatestVersion(moduleName);
@@ -80,7 +75,7 @@ export class PackageController {
       );
     }
 
-    this.packageService.pushPackageInfo(dto, lastVersion);
+    this.packageService.pushPackageInfo(uploadInfo, lastVersion);
   }
 
   @Post('stopPackage')

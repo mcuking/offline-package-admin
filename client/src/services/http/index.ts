@@ -1,12 +1,10 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import LocalConfig from '../../config.json';
+import LocalConfig from '@/config.json';
 
 interface ResponseData<T> {
   data: T;
-  errmsg: string;
-  errno: number;
-  list: any;
-  pagination: any;
+  message: string;
+  code: number;
 }
 
 const DEFAULT_OPTIONS = {

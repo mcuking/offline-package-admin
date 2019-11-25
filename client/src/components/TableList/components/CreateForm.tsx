@@ -52,7 +52,7 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
   };
   return (
     <Modal
-      title="新建离线包"
+      title="新增离线包"
       okText="确认"
       cancelText="取消"
       closable={false}

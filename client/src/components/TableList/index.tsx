@@ -224,7 +224,7 @@ const TableList: React.FC<TableListProps> = (props) => {
             type="primary"
             onClick={() => setCreateFormVisible(true)}
           >
-            新建离线包
+            新增离线包
           </Button>
         </div>
         <Table

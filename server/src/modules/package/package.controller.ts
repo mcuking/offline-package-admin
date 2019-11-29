@@ -16,12 +16,50 @@ import {
 } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
+import * as path from 'path';
 import { PackageService } from './package.service';
+import { CreatePackageDto } from './create.package.dto';
 import { QueryPackageDto } from './query.package.dto';
 import { StopPackageDto } from './stop.package.dto';
 import { getFileName, getFilePath } from '../../common/utils/tools';
 import { ApiException } from '../../common/exceptions/api.exception';
 import { ApiErrorCode } from '../../common/enums/api-error-code.enum';
+
+const destination = (req, file, cb) => {
+  const { moduleName } = req.body;
+  const mainPath = 'packages';
+  if (!fs.existsSync(mainPath)) {
+    fs.mkdirSync(mainPath);
+  }
+  const workPath = `packages/${moduleName}`;
+  if (!fs.existsSync(workPath)) {
+    fs.mkdirSync(workPath);
+  }
+  cb(null, `./packages/${moduleName}`);
+};
+
+const filename = (req, file, cb) => {
+  const { moduleName, version } = req.body;
+  const fileName = getFileName(moduleName, version);
+  cb(null, `${fileName}_temp`);
+};
+
+const zipFileFilter = (req, file, cb) => {
+  const ext = path.extname(file.originalname);
+
+  if (ext !== '.zip') {
+    return cb(
+      new ApiException(
+        '只能上传 zip 类型文件',
+        ApiErrorCode.FILE_TYPE_INVALID,
+        HttpStatus.BAD_REQUEST,
+      ),
+      false,
+    );
+  }
+
+  return cb(null, true);
+};
 
 @Controller('/')
 @ApiUseTags('离线包')
@@ -38,23 +76,10 @@ export class PackageController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: (req: any, file: any, cb: any) => {
-          const mainPath = 'packages';
-          if (!fs.existsSync(mainPath)) {
-            fs.mkdirSync(mainPath);
-          }
-          const workPath = `packages/${req.body.moduleName}`;
-          if (!fs.existsSync(workPath)) {
-            fs.mkdirSync(workPath);
-          }
-          cb(null, `./packages/${req.body.moduleName}`);
-        },
-        filename: (req: any, file: any, cb: any) => {
-          const { moduleName, version } = req.body;
-          const fileName = getFileName(moduleName, version);
-          cb(null, `${fileName}_temp`);
-        },
+        destination,
+        filename,
       }),
+      fileFilter: zipFileFilter,
     }),
   )
   @ApiOperation({ title: '上传离线包' })

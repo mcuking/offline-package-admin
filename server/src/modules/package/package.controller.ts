@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  UploadedFile,
   UseInterceptors,
   HttpStatus,
 } from '@nestjs/common';
@@ -85,13 +84,14 @@ export class PackageController {
   @ApiOperation({ title: '上传离线包' })
   @ApiConsumes('multipart/form-data')
   @ApiImplicitFile({ name: 'file', required: true })
-  async pushPackageInfo(@UploadedFile() file, @Body() uploadInfo) {
+  async pushPackageInfo(@Body() uploadInfo: CreatePackageDto) {
     const { moduleName, version } = uploadInfo;
 
     // 进行参数校验
     const lastVersion = await this.packageService.getLatestVersion(moduleName);
-    if (lastVersion && lastVersion >= version) {
-      const tempFilePath = getFilePath(moduleName, version) + '_temp';
+    if (lastVersion && lastVersion >= parseInt(version, 10)) {
+      const tempFilePath =
+        getFilePath(moduleName, parseInt(version, 10)) + '_temp';
       fs.unlinkSync(tempFilePath);
       throw new ApiException(
         '版本号不能低于或等于当前最新版本',

@@ -43,7 +43,6 @@ export default async function<T = any>(
 
   try {
     const { data } = await instance.request<ResponseData<T>>(requestOptions);
-    console.log(data);
     return data;
   } catch (err) {
     throw err;

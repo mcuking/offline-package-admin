@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as fs from 'fs';
 import { PackageEntity } from './package.entity';
+import { QueryPackageDto } from './query.package.dto';
 import config from '../../common/config';
 import { getFilePath, getFileName } from '../../common/utils/tools';
 
@@ -50,7 +51,7 @@ export class PackageService {
     }
 
     const fileName = getFileName(moduleName, version);
-    const packageInfo: any = {
+    const packageInfo: PackageEntity = {
       status: 1,
       downloadUrl: `${config.downloadUrl}/${moduleName}/${fileName}`,
       patchUrls,
@@ -60,7 +61,7 @@ export class PackageService {
     this.packageEntity.save(this.packageEntity.create(packageInfo));
   }
 
-  getPackageInfoList(query: any) {
+  getPackageInfoList(query: QueryPackageDto) {
     const subQuery = this.packageEntity.createQueryBuilder('package');
 
     let whereCondition = '1=1';

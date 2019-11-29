@@ -26,6 +26,7 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
   let [uploadFile, setUploadFile] = useState({} as File);
 
   const handleInputFileChange = () => {
+    setUploadFile({} as File);
     const files = (document.querySelector('#fileUpload') as HTMLInputElement)
       .files;
     if (files && files.length > 0) {
@@ -48,6 +49,8 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
       formData.append('file', uploadFile);
 
       handleAddPackage(formData);
+
+      setUploadFile({} as File);
     });
   };
   return (

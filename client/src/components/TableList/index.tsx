@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  Table,
-  Divider,
-  Button,
-  Modal,
-  Form,
-  Col,
-  Row,
-  Select,
-  Input
-} from 'antd';
+import { Table, Button, Form, Col, Row, Select, Input } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import CreateForm from './components/CreateForm';
 import DetailModal from './components/DetailModal';
@@ -57,7 +47,7 @@ const TableList: React.FC<TableListProps> = (props) => {
           >
             查看
           </button>
-          {record.status === 1 && (
+          {/* {record.status === 1 && (
             <span>
               <Divider type="vertical" />
               <button
@@ -67,7 +57,7 @@ const TableList: React.FC<TableListProps> = (props) => {
                 终止发布
               </button>
             </span>
-          )}
+          )} */}
         </>
       )
     }
@@ -98,32 +88,34 @@ const TableList: React.FC<TableListProps> = (props) => {
     } catch (error) {
       console.log(error);
     } finally {
-      fetchPackageList({ page: 1, size: LocalConfig.ListQueryCount });
       setCreateFormVisible(false);
       setPushConfirmLoading(false);
+      setTimeout(() => {
+        fetchPackageList({ page: 1, size: LocalConfig.ListQueryCount });
+      }, 1000);
     }
   };
 
-  const handleStopPackage = async (data: IPackageInfo) => {
-    try {
-      await new PackageService().stopPackage(data.id);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      fetchPackageList({ page: 1, size: LocalConfig.ListQueryCount });
-    }
-  };
+  // const handleStopPackage = async (data: IPackageInfo) => {
+  //   try {
+  //     await new PackageService().stopPackage(data.id);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     fetchPackageList({ page: 1, size: LocalConfig.ListQueryCount });
+  //   }
+  // };
 
-  const handleConfimStopPackage = (data: IPackageInfo) => {
-    Modal.confirm({
-      title: '确认要终止发布该离线包吗？',
-      okText: '确认',
-      cancelText: '取消',
-      onOk() {
-        handleStopPackage(data);
-      }
-    });
-  };
+  // const handleConfimStopPackage = (data: IPackageInfo) => {
+  //   Modal.confirm({
+  //     title: '确认要终止发布该离线包吗？',
+  //     okText: '确认',
+  //     cancelText: '取消',
+  //     onOk() {
+  //       handleStopPackage(data);
+  //     }
+  //   });
+  // };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

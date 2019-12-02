@@ -1,5 +1,5 @@
 {
-  "AxiosBaseUrl": "http://localhost:5001",
+  "AxiosBaseUrl": "/api",
   "AxiosTimeout": 30000,
   "AxiosHeader": {
     "Content-Type": "application/json;chareset=UTF-8"

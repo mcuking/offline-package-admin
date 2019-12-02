@@ -38,7 +38,7 @@ export default async function<T = any>(
   const { url } = options;
   const requestOptions = Object.assign({}, options, {
     method: 'post',
-    url: '/api' + url
+    url
   });
 
   try {

@@ -15,9 +15,9 @@ services:
     restart: always
     environment:
       - PORT=5002
-      - MYSQL_HOST=localhost
+      - MYSQL_HOST=122.51.132.117
       - MYSQL_DATABASE=offline
       - MYSQL_USERNAME=root
-      - MYSQL_PASSWORD=test1234
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     ports:
       - 5002:5002

@@ -1,12 +1,13 @@
 import * as bsdiff from 'bsdiff-nodejs';
+import * as fs from 'fs';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as fs from 'fs';
 import { PackageEntity } from './package.entity';
+import { IUploadInfo } from '../../types';
 import { QueryPackageDto } from './query.package.dto';
 import config from '../../common/config';
-import { getFilePath, getFileName } from '../../common/utils/tools';
+import { getFilePath, getFileName, getFileMd5 } from '../../common/utils/tools';
 
 @Injectable()
 export class PackageService {
@@ -15,50 +16,61 @@ export class PackageService {
     private readonly packageEntity: Repository<PackageEntity>,
   ) {}
 
-  async pushPackageInfo(dto, lastVersion: number | void) {
-    const { moduleName, version } = dto;
+  async pushPackageInfo(uploadInfo: IUploadInfo, lastVersion: number | void) {
+    try {
+      const { moduleName, version } = uploadInfo;
 
-    // 因校验通过，因此需去除本地文件名的 _tmp 后缀
-    const tempFilePath = getFilePath(moduleName, version) + '_temp';
-    const filePath = getFilePath(moduleName, version);
-    fs.renameSync(tempFilePath, filePath);
+      // 因校验通过，因此需去除本地文件名的 _tmp 后缀
+      const tempFilePath = getFilePath(moduleName, version) + '_temp';
+      const filePath = getFilePath(moduleName, version);
+      fs.renameSync(tempFilePath, filePath);
+      const fileMd5 = getFileMd5(filePath);
 
-    let patchUrls = '';
+      let patchUrls = '';
 
-    // 如果存在上个版本，则使用 bsdiff 算法计算两个版本的差分包
-    if (lastVersion) {
-      const oldFilePath = getFilePath(moduleName, lastVersion);
+      // 如果存在上个版本，则使用 bsdiff 算法计算两个版本的差分包
+      if (lastVersion) {
+        const oldFilePath = getFilePath(moduleName, lastVersion);
 
-      const patchFilePath = getFilePath(moduleName, version, lastVersion);
+        const patchFileName = getFileName(moduleName, version, lastVersion);
+        const patchFilePath = getFilePath(moduleName, version, lastVersion);
 
-      await bsdiff.diff(
-        oldFilePath,
-        filePath,
-        patchFilePath,
-        (result: any, err: any) => {
-          if (err) {
-            Logger.error(err);
-            return;
-          }
-          Logger.log('diff:' + String(result).padStart(4) + '%');
-        },
-      );
+        await bsdiff.diff(
+          oldFilePath,
+          filePath,
+          patchFilePath,
+          (result: any, err: any) => {
+            if (err) {
+              Logger.error(err);
+              return;
+            }
+            Logger.log('diff:' + String(result).padStart(4) + '%');
+          },
+        );
 
-      const patchFileName = getFileName(moduleName, version, lastVersion);
-      patchUrls = JSON.stringify({
-        [lastVersion]: `${config.downloadUrl}/${moduleName}/${patchFileName}`,
-      });
+        const patchFileMd5 = getFileMd5(patchFilePath);
+
+        patchUrls = JSON.stringify({
+          [lastVersion]: {
+            fileUrl: `${config.downloadUrl}/${moduleName}/${patchFileName}`,
+            fileMd5: patchFileMd5,
+          },
+        });
+      }
+
+      const fileName = getFileName(moduleName, version);
+      const packageInfo = {
+        status: 1,
+        fileUrl: `${config.downloadUrl}/${moduleName}/${fileName}`,
+        fileMd5,
+        patchUrls,
+        ...uploadInfo,
+      };
+
+      this.packageEntity.save(this.packageEntity.create(packageInfo));
+    } catch (error) {
+      Logger.log('service: pushPackageInfo', error);
     }
-
-    const fileName = getFileName(moduleName, version);
-    const packageInfo: PackageEntity = {
-      status: 1,
-      downloadUrl: `${config.downloadUrl}/${moduleName}/${fileName}`,
-      patchUrls,
-      ...dto,
-    };
-
-    this.packageEntity.save(this.packageEntity.create(packageInfo));
   }
 
   getPackageInfoList(query: QueryPackageDto) {
@@ -134,9 +146,17 @@ export class PackageService {
           )
           .getOne();
 
+        let { patchUrls } = latestItem;
+        patchUrls = patchUrls ? JSON.parse(patchUrls) : '';
+        const preVersion = patchUrls ? Object.keys(patchUrls)[0] : '';
+        const patchFileMd5 = patchUrls ? patchUrls[preVersion].fileMd5 : '';
+
         return {
           packageId: latestItem.moduleName,
           version: latestItem.version.toString(),
+          preVersion,
+          fileMd5: latestItem.fileMd5,
+          patchFileMd5,
           status: 1,
           isPatch: latestItem.version !== 1,
         };

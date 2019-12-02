@@ -23,8 +23,11 @@ export class PackageEntity {
   @Column({ comment: '更新日志', name: 'updateLog' })
   updateLog: string;
 
-  @Column({ comment: '下载地址', name: 'downloadUrl' })
-  downloadUrl: string;
+  @Column({ comment: '文件下载地址', name: 'fileUrl' })
+  fileUrl: string;
+
+  @Column({ comment: '文件md5值', name: 'fileMd5' })
+  fileMd5: string;
 
   @Column({ comment: 'patch差异包的地址', name: 'patchUrls' })
   patchUrls: string;

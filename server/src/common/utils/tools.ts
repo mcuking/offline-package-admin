@@ -1,5 +1,7 @@
 import * as path from 'path';
+import * as fs from 'fs';
 import * as md5 from 'md5';
+import * as crypto from 'crypto';
 
 const getFilePath = (
   moduleName: string,
@@ -21,4 +23,12 @@ const getFileName = (
   return md5(`${moduleName}${version}`);
 };
 
-export { getFilePath, getFileName };
+const getFileMd5 = (filePath: string) => {
+  const buffer = fs.readFileSync(filePath);
+  const fsHash = crypto.createHash('md5');
+  fsHash.update(buffer);
+  const fileMd5 = fsHash.digest('hex');
+  return fileMd5;
+};
+
+export { getFilePath, getFileName, getFileMd5 };

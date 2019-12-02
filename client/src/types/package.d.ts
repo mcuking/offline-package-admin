@@ -5,10 +5,10 @@ export interface IPackageInfo {
   version: number;
   status: number;
   statusStr: string;
-  createTime: string;
   updateLog: string;
-  downloadUrl: string;
+  fileUrl: string;
   patchUrls: string;
+  createTime: string;
 }
 
 export interface IPackageInfoListQuery {

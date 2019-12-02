@@ -84,14 +84,14 @@ export class PackageController {
   @ApiOperation({ title: '上传离线包' })
   @ApiConsumes('multipart/form-data')
   @ApiImplicitFile({ name: 'file', required: true })
-  async pushPackageInfo(@Body() uploadInfo: CreatePackageDto) {
-    const { moduleName, version } = uploadInfo;
+  async pushPackageInfo(@Body() dto: CreatePackageDto) {
+    const { moduleName, version, ...otherDto } = dto;
+    const versionNo = parseInt(version, 10);
 
     // 进行参数校验
     const lastVersion = await this.packageService.getLatestVersion(moduleName);
-    if (lastVersion && lastVersion >= parseInt(version, 10)) {
-      const tempFilePath =
-        getFilePath(moduleName, parseInt(version, 10)) + '_temp';
+    if (lastVersion && lastVersion >= versionNo) {
+      const tempFilePath = getFilePath(moduleName, versionNo) + '_temp';
       fs.unlinkSync(tempFilePath);
       throw new ApiException(
         '版本号不能低于或等于当前最新版本',
@@ -100,6 +100,11 @@ export class PackageController {
       );
     }
 
+    const uploadInfo = {
+      moduleName,
+      version: versionNo,
+      ...otherDto,
+    };
     this.packageService.pushPackageInfo(uploadInfo, lastVersion);
   }
 

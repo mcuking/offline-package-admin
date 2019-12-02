@@ -57,11 +57,7 @@ const DetailModal: React.FC<DetailModalProps> = (props) => {
         label="下载地址"
       >
         <div>
-          <a
-            href={current.downloadUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={current.fileUrl} target="_blank" rel="noopener noreferrer">
             全量包
           </a>
         </div>
@@ -69,7 +65,7 @@ const DetailModal: React.FC<DetailModalProps> = (props) => {
           return (
             <div key={version}>
               <a
-                href={patchUrls[version]}
+                href={patchUrls[version].fileUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >{`${version} -> ${current.version}`}</a>

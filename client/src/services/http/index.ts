@@ -1,10 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { message } from 'antd';
 import LocalConfig from '@/config.json';
 
 interface ResponseData<T> {
   data: T;
-  message: string;
-  code: number;
+  errorCode: number;
+  errorMessage: string;
 }
 
 const DEFAULT_OPTIONS = {
@@ -26,8 +27,8 @@ instance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (thrown) => {
-    return Promise.reject(thrown);
+  (error) => {
+    return Promise.reject(error);
   }
 );
 
@@ -42,9 +43,17 @@ export default async function<T = any>(
   });
 
   try {
-    const { data } = await instance.request<ResponseData<T>>(requestOptions);
+    const {
+      data,
+      data: { errorMessage }
+    } = await instance.request<ResponseData<T>>(requestOptions);
+    if (errorMessage) {
+      message.error(errorMessage);
+      throw new Error(errorMessage);
+    }
+
     return data;
-  } catch (err) {
-    throw err;
+  } catch (error) {
+    throw error;
   }
 }

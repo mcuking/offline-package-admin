@@ -66,7 +66,7 @@ const App: React.FC = () => {
               margin: '24px',
               padding: 24,
               background: '#fff',
-              minHeight: 280
+              minHeight: 'auto'
             }}
           >
             <Switch>

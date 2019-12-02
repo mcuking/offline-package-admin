@@ -34,6 +34,12 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
     }
   };
 
+  const cancelHandle = () => {
+    form.resetFields();
+    setUploadFile({} as File);
+    setCreateFormVisible(false);
+  };
+
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -53,6 +59,7 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
       setUploadFile({} as File);
     });
   };
+
   return (
     <Modal
       title="新增离线包"
@@ -61,8 +68,8 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
       closable={false}
       confirmLoading={pushConfirmLoading}
       visible={createFormVisible}
-      onCancel={() => setCreateFormVisible(false)}
-      onOk={() => okHandle()}
+      onCancel={cancelHandle}
+      onOk={okHandle}
     >
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="模块名">
         {form.getFieldDecorator('moduleName', {

@@ -51,7 +51,7 @@ const zipFileFilter = (req, file, cb) => {
       new ApiException(
         '只能上传 zip 类型文件',
         ApiErrorCode.FILE_TYPE_INVALID,
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.OK,
       ),
       false,
     );
@@ -96,7 +96,7 @@ export class PackageController {
       throw new ApiException(
         '版本号不能低于或等于当前最新版本',
         ApiErrorCode.VERSION_INVALID,
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.OK,
       );
     }
 
@@ -105,7 +105,7 @@ export class PackageController {
       version: versionNo,
       ...otherDto,
     };
-    this.packageService.pushPackageInfo(uploadInfo, lastVersion);
+    return this.packageService.pushPackageInfo(uploadInfo, lastVersion);
   }
 
   @Post('stopPackage')

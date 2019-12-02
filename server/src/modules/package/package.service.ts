@@ -67,13 +67,13 @@ export class PackageService {
         ...uploadInfo,
       };
 
-      this.packageEntity.save(this.packageEntity.create(packageInfo));
+      return this.packageEntity.save(this.packageEntity.create(packageInfo));
     } catch (error) {
       Logger.log('service: pushPackageInfo', error);
     }
   }
 
-  getPackageInfoList(query: QueryPackageDto) {
+  async getPackageInfoList(query: QueryPackageDto) {
     const subQuery = this.packageEntity.createQueryBuilder('package');
 
     let whereCondition = '1=1';
@@ -102,7 +102,7 @@ export class PackageService {
       });
   }
 
-  getLatestVersion(moduleName: string) {
+  async getLatestVersion(moduleName: string) {
     return this.packageEntity
       .createQueryBuilder('package')
       .where('package.moduleName=:moduleName', { moduleName })
@@ -118,7 +118,7 @@ export class PackageService {
       .catch(error => Logger.log('service: getLatestVersion', error));
   }
 
-  stopPackage(id: number) {
+  async stopPackage(id: number) {
     return this.packageEntity
       .findOneOrFail({ id })
       .then(() => this.packageEntity.update({ id }, { status: 0 }))

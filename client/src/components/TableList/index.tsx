@@ -1,9 +1,9 @@
 import React from 'react';
-import { Table, Button, Form, Col, Row, Select, Input } from 'antd';
+import { Table, Button, Form, Col, Row, Select, Input, Divider, Modal } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import CreateForm from './components/CreateForm';
 import DetailModal from './components/DetailModal';
-import { PackageService } from '@/services/package/requests';
+import packageService from '@/services/package/requests';
 import LocalConfig from '@/config.json';
 import { IPackageInfo, IPackageInfoListQuery, IPagination } from '@/types';
 
@@ -47,17 +47,13 @@ const TableList: React.FC<TableListProps> = (props) => {
           >
             查看
           </button>
-          {/* {record.status === 1 && (
-            <span>
-              <Divider type="vertical" />
-              <button
-                className={styles.tableListButton}
-                onClick={() => handleConfimStopPackage(record)}
-              >
-                终止发布
-              </button>
-            </span>
-          )} */}
+          <Divider type="vertical" />
+          <button
+            className={styles.tableListButton}
+            onClick={() => handleConfirmDeletePackage(record.id)}
+          >
+            删除
+          </button>
         </>
       )
     }
@@ -84,7 +80,7 @@ const TableList: React.FC<TableListProps> = (props) => {
 
   const handleAddPackage = async (data: FormData) => {
     try {
-      await new PackageService().pushPackageInfo(data);
+      await packageService.pushPackageInfo(data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -96,26 +92,28 @@ const TableList: React.FC<TableListProps> = (props) => {
     }
   };
 
-  // const handleStopPackage = async (data: IPackageInfo) => {
-  //   try {
-  //     await new PackageService().stopPackage(data.id);
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     fetchPackageList({ page: 1, size: LocalConfig.ListQueryCount });
-  //   }
-  // };
+  const handleConfirmDeletePackage = (id: number) => {
+    Modal.confirm({
+      title: '确认要终止发布该离线包吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        handleDeletePackage(id);
+      }
+    });
+  }
 
-  // const handleConfimStopPackage = (data: IPackageInfo) => {
-  //   Modal.confirm({
-  //     title: '确认要终止发布该离线包吗？',
-  //     okText: '确认',
-  //     cancelText: '取消',
-  //     onOk() {
-  //       handleStopPackage(data);
-  //     }
-  //   });
-  // };
+  const handleDeletePackage = async (id: number) => {
+    try {
+      await packageService.deletePackage(id);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setTimeout(() => {
+        fetchPackageList({ page: 1, size: LocalConfig.ListQueryCount });
+      }, 1000);
+    }
+  }
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -156,7 +154,7 @@ const TableList: React.FC<TableListProps> = (props) => {
       Reflect.deleteProperty(query, 'status');
     }
 
-    const { list, total } = await new PackageService().getPackageInfoList(
+    const { list, total } = await packageService.getPackageInfoList(
       query
     );
     setPackageList(list);

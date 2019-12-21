@@ -125,6 +125,13 @@ export class PackageService {
       .then(() => null);
   }
 
+  async deletePackage(id: number) {
+    return this.packageEntity
+      .findOneOrFail({ id })
+      .then(() => this.packageEntity.delete({ id }))
+      .then(() => null);
+  }
+
   async getLatestPackageList() {
     const items = await this.packageEntity
       .createQueryBuilder('package')

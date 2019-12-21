@@ -19,6 +19,7 @@ import * as path from 'path';
 import { PackageService } from './package.service';
 import { CreatePackageDto } from './create.package.dto';
 import { QueryPackageDto } from './query.package.dto';
+import { DeletePackageDto } from './delete.package.dto';
 import { StopPackageDto } from './stop.package.dto';
 import { getFileName, getFilePath } from '../../common/utils/tools';
 import { ApiException } from '../../common/exceptions/api.exception';
@@ -106,6 +107,12 @@ export class PackageController {
       ...otherDto,
     };
     return this.packageService.pushPackageInfo(uploadInfo, lastVersion);
+  }
+
+  @Post('deletePackage')
+  @ApiOperation({ title: '删除发布某次发布的离线包' })
+  async deletePackage(@Body() dto: DeletePackageDto) {
+    return await this.packageService.deletePackage(dto.id);
   }
 
   @Post('stopPackage')

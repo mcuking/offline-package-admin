@@ -8,10 +8,10 @@ export interface IPackageService {
   getPackageInfoList(
     query: ListQuery
   ): Promise<{ total: number; list: IPackageInfo[] }>;
-  stopPackage(id: number): void;
+  deletePackage(id: number): void;
 }
 
-export class PackageService implements IPackageService {
+class PackageService implements IPackageService {
   public async pushPackageInfo(data: FormData) {
     await http({
       method: 'post',
@@ -36,13 +36,17 @@ export class PackageService implements IPackageService {
     };
   }
 
-  public async stopPackage(id: number) {
+  public async deletePackage(id: number) {
     await http({
-      method: 'get',
-      url: '/stopPackage',
+      method: 'post',
+      url: '/deletePackage',
       data: {
         id
       }
     });
   }
 }
+
+const packageService = new PackageService();
+
+export default packageService;

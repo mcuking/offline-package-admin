@@ -132,9 +132,10 @@ export class PackageService {
       .then(() => null);
   }
 
-  async getLatestPackageList() {
+  async getLatestPackageList(appName: string | undefined) {
     const items = await this.packageEntity
       .createQueryBuilder('package')
+      .where('package.appName=:appName', { appName })
       .groupBy('moduleName')
       .select('moduleName')
       .addSelect('MAX(version)', 'version')

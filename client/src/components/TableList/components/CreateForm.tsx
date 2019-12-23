@@ -91,6 +91,16 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
           ]
         })(<InputNumber precision={0} min={0} />)}
       </FormItem>
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="app名">
+        {form.getFieldDecorator('appName', {
+          rules: [
+            {
+              required: true,
+              message: '请输入 APP 名'
+            }
+          ]
+        })(<Input maxLength={10} placeholder="建议用英文命名" />)}
+      </FormItem>
       <FormItem
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 15 }}

@@ -127,8 +127,6 @@ export class PackageController {
   @ApiOperation({ title: '获取最新版本离线包集合的json' })
   async getPackageIndex(@Query() query: GetLatestPackageDto) {
     const latestPackageList = await this.packageService.getLatestPackageList(query.appName);
-    return {
-      items: latestPackageList,
-    };
+    return latestPackageList;
   }
 }

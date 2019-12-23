@@ -157,16 +157,17 @@ export class PackageService {
         let { patchUrls } = latestItem;
         patchUrls = patchUrls ? JSON.parse(patchUrls) : '';
         const preVersion = patchUrls ? Object.keys(patchUrls)[0] : '';
+        const patchFileUrl = patchUrls ? patchUrls[preVersion].fileUrl : '';
         const patchFileMd5 = patchUrls ? patchUrls[preVersion].fileMd5 : '';
 
         return {
-          packageId: latestItem.moduleName,
+          module_name: latestItem.moduleName,
           version: latestItem.version.toString(),
-          preVersion,
-          fileMd5: latestItem.fileMd5,
-          patchFileMd5,
-          status: 1,
-          isPatch: latestItem.version !== 1,
+          status: latestItem.status,
+          origin_file_path: latestItem.fileUrl,
+          origin_file_md5: latestItem.fileMd5,
+          patch_file_path: patchFileUrl,
+          patch_file_md5: patchFileMd5,
         };
       }),
     );

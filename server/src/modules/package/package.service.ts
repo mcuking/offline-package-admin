@@ -86,10 +86,15 @@ export class PackageService {
       whereCondition += ' And package.status=:status';
     }
 
+    if (query.appName !== undefined) {
+      whereCondition += ' And package.appName=:appName';
+    }
+
     return subQuery
       .where(whereCondition, {
         moduleName: query.moduleName,
         status: query.status,
+        appName: query.appName,
       })
       .skip((query.page - 1) * query.size)
       .take(query.size)
@@ -162,7 +167,7 @@ export class PackageService {
 
         return {
           module_name: latestItem.moduleName,
-          version: latestItem.version.toString(),
+          version: latestItem.version,
           status: latestItem.status,
           origin_file_path: latestItem.fileUrl,
           origin_file_md5: latestItem.fileMd5,

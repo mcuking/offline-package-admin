@@ -195,6 +195,11 @@ const TableList: React.FC<TableListProps> = (props) => {
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
+            <FormItem label="APP名">
+              {getFieldDecorator('appName')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询

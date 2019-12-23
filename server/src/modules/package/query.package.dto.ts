@@ -21,8 +21,14 @@ export class QueryPackageDto {
   @IsOptional()
   @IsString()
   @ApiModelProperty()
-  @MaxLength(5, { message: '不能超过5个字' })
+  @MaxLength(10, { message: '不能超过10个字' })
   moduleName: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiModelProperty()
+  @MaxLength(10, { message: '不能超过10个字' })
+  appName: string;
 
   @IsOptional()
   @IsNumber()

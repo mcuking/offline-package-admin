@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Body,
+  Query,
   UseInterceptors,
   HttpStatus,
 } from '@nestjs/common';
@@ -21,6 +22,7 @@ import { CreatePackageDto } from './create.package.dto';
 import { QueryPackageDto } from './query.package.dto';
 import { DeletePackageDto } from './delete.package.dto';
 import { StopPackageDto } from './stop.package.dto';
+import { GetLatestPackageDto } from './getLatest.package.dto';
 import { getFileName, getFilePath } from '../../common/utils/tools';
 import { ApiException } from '../../common/exceptions/api.exception';
 import { ApiErrorCode } from '../../common/enums/api-error-code.enum';
@@ -123,8 +125,8 @@ export class PackageController {
 
   @Get('getPackageIndex')
   @ApiOperation({ title: '获取最新版本离线包集合的json' })
-  async getPackageIndex() {
-    const latestPackageList = await this.packageService.getLatestPackageList();
+  async getPackageIndex(@Query() query: GetLatestPackageDto) {
+    const latestPackageList = await this.packageService.getLatestPackageList(query.appName);
     return {
       items: latestPackageList,
     };

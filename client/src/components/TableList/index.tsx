@@ -27,6 +27,11 @@ const TableList: React.FC<TableListProps> = (props) => {
       key: 'version'
     },
     {
+      title: 'app名',
+      dataIndex: 'appName',
+      key: 'appName'
+    },
+    {
       title: '状态',
       dataIndex: 'statusStr',
       key: 'statusStr'
@@ -88,7 +93,7 @@ const TableList: React.FC<TableListProps> = (props) => {
       setPushConfirmLoading(false);
       setTimeout(() => {
         fetchPackageList({ page: 1, size: LocalConfig.ListQueryCount });
-      }, 1000);
+      }, 2000);
     }
   };
 

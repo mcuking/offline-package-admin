@@ -32,6 +32,9 @@ export class PackageEntity {
   @Column({ comment: 'patch差异包的地址', name: 'patchUrls' })
   patchUrls: string;
 
+  @Column({ comment: 'app名', name: 'appName' })
+  appName: string;
+
   @CreateDateColumn({ comment: '创建时间', name: 'createTime' })
   createTime: string;
 

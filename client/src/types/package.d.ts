@@ -3,6 +3,7 @@ export interface IPackageInfo {
   key: number;
   moduleName: string;
   version: number;
+  appName: string;
   status: number;
   statusStr: string;
   updateLog: string;

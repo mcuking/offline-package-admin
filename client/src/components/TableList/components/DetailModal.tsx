@@ -34,6 +34,9 @@ const DetailModal: React.FC<DetailModalProps> = (props) => {
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="版本号">
         {current.version}
       </FormItem>
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="app名">
+        {current.appName}
+      </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="状态">
         {current.status === 1 ? '在线' : '已停用'}
       </FormItem>

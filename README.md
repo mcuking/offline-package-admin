@@ -4,11 +4,13 @@
 
 ## 原理
 
+整体方案说明文章：
+
+[Hybrid App 离线包方案实践](https://github.com/mcuking/blog/issues/63)
+
 原理图如下图所示：
 
 <img src="./assets/principle.png" width=600/>
-
-todo
 
 管理界面如下：
 

@@ -1,5 +1,15 @@
 import React from 'react';
-import { Table, Button, Form, Col, Row, Select, Input, Divider, Modal } from 'antd';
+import {
+  Table,
+  Button,
+  Form,
+  Col,
+  Row,
+  Select,
+  Input,
+  Divider,
+  Modal
+} from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import CreateForm from './components/CreateForm';
 import DetailModal from './components/DetailModal';
@@ -106,7 +116,7 @@ const TableList: React.FC<TableListProps> = (props) => {
         handleDeletePackage(id);
       }
     });
-  }
+  };
 
   const handleDeletePackage = async (id: number) => {
     try {
@@ -118,7 +128,7 @@ const TableList: React.FC<TableListProps> = (props) => {
         fetchPackageList({ page: 1, size: LocalConfig.ListQueryCount });
       }, 1000);
     }
-  }
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,13 +165,15 @@ const TableList: React.FC<TableListProps> = (props) => {
       Reflect.deleteProperty(query, 'moduleName');
     }
 
+    if (query.appName === '') {
+      Reflect.deleteProperty(query, 'appName');
+    }
+
     if (query.status === 'all') {
       Reflect.deleteProperty(query, 'status');
     }
 
-    const { list, total } = await packageService.getPackageInfoList(
-      query
-    );
+    const { list, total } = await packageService.getPackageInfoList(query);
     setPackageList(list);
     setListTotal(total);
   };

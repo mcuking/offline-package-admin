@@ -15,6 +15,7 @@ export interface IPackageInfo {
 export interface IPackageInfoListQuery {
   page: number;
   size: number;
+  appName?: string;
   moduleName?: string;
   status?: string;
 }

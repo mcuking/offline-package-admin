@@ -26,7 +26,6 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
   let [uploadFile, setUploadFile] = useState({} as File);
 
   const handleInputFileChange = () => {
-    setUploadFile({} as File);
     const files = (document.querySelector('#fileUpload') as HTMLInputElement)
       .files;
     if (files && files.length > 0) {
@@ -36,7 +35,11 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
 
   const cancelHandle = () => {
     form.resetFields();
+
+    // 重置 input file
     setUploadFile({} as File);
+    (document.querySelector('#fileUpload') as HTMLInputElement).value = '';
+
     setCreateFormVisible(false);
   };
 
@@ -56,7 +59,9 @@ const CreateForm: React.FC<DetailFormProps> = (props) => {
 
       handleAddPackage(formData);
 
+      // 重置 input file
       setUploadFile({} as File);
+      (document.querySelector('#fileUpload') as HTMLInputElement).value = '';
     });
   };
 

@@ -20,7 +20,7 @@
     "@nestjs/swagger": "^3.1.0",
     "@nestjs/typeorm": "^6.2.0",
     "bsdiff-nodejs": "^2.1.0",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.10.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
